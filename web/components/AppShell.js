@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { api, getToken, clearToken } from "@/lib/api";
+import { api, getToken, clearToken, getCachedMe, readStoredMe } from "@/lib/api";
 import { Spinner } from "./ui";
 import { IconCards, IconChat, IconExam, IconHome, IconQuiz, IconTrophy } from "./Icons";
 
@@ -21,7 +21,8 @@ const TABS = [
 export default function AppShell({ title, children }) {
   const router = useRouter();
   const path = usePathname();
-  const [user, setUser] = useState(null);
+  // Start from the profile we already have, so switching pages shows no "Loading…"
+  const [user, setUser] = useState(() => getCachedMe());
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -29,11 +30,17 @@ export default function AppShell({ title, children }) {
       router.replace("/login");
       return;
     }
+    // Opening the app again: show the saved profile instantly, refresh it in the background
+    const saved = getCachedMe() || readStoredMe();
+    if (saved) setUser(saved);
+
     let alive = true;
     api
       .me()
       .then((d) => alive && setUser(d))
-      .catch((e) => alive && setError(e.message));
+      .catch((e) => {
+        if (alive && !getCachedMe()) setError(e.message);
+      });
     return () => {
       alive = false;
     };
