@@ -11,7 +11,7 @@ database_id = "d0f666b7-bfd1-496a-b75d-1220b759c8d0"
 
 [vars]
 # Comma-separated list of sites allowed to call this API.
-ALLOWED_ORIGINS = "http://localhost:3000"
+ALLOWED_ORIGINS = "http://localhost:3000,https://app-of-the-student-bot.vercel.app/"
 
 # Secrets (set once, not stored in this file):
 #   wrangler secret put TELEGRAM_BOT_TOKEN
