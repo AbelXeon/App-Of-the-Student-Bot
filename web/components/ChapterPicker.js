@@ -1,4 +1,5 @@
 "use client";
+import { IconBook, IconGlobe } from "./Icons";
 
 export default function ChapterPicker({ chapters, value, onChange }) {
   return (
@@ -10,7 +11,8 @@ export default function ChapterPicker({ chapters, value, onChange }) {
         className={`chip ${value === "all" ? "on" : ""}`}
         onClick={() => onChange("all")}
       >
-        🌐 All chapters
+        <IconGlobe size={15} />
+        All chapters
       </button>
       {chapters.map((c) => (
         <button
@@ -21,7 +23,8 @@ export default function ChapterPicker({ chapters, value, onChange }) {
           className={`chip ${value === c ? "on" : ""}`}
           onClick={() => onChange(c)}
         >
-          📖 Chapter {c}
+          <IconBook size={15} />
+          Chapter {c}
         </button>
       ))}
     </div>

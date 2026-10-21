@@ -4,6 +4,13 @@ import { api } from "@/lib/api";
 import { useUser } from "./AppShell";
 import ChapterPicker from "./ChapterPicker";
 import { Spinner, ErrorNote } from "./ui";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconFlag,
+  IconLightbulb,
+  IconRefresh,
+} from "./Icons";
 
 const COUNTS = { Quiz: [5, 10, 15], Exam: [20, 25, 30] };
 const LETTERS = ["A", "B", "C", "D"];
@@ -139,7 +146,8 @@ export default function QuizFlow({ type }) {
         <ErrorNote>{error}</ErrorNote>
         <div className="row">
           <button className="btn" disabled={idx === 0 || stage === "submitting"} onClick={() => setIdx(idx - 1)}>
-            ← Back
+            <IconArrowLeft size={17} />
+            Back
           </button>
           {isLast ? (
             <button className="btn btn-primary grow" disabled={stage === "submitting"} onClick={finish}>
@@ -147,7 +155,8 @@ export default function QuizFlow({ type }) {
             </button>
           ) : (
             <button className="btn btn-primary grow" onClick={() => setIdx(idx + 1)}>
-              Next →
+              Next
+              <IconArrowRight size={17} />
             </button>
           )}
         </div>
@@ -159,8 +168,9 @@ export default function QuizFlow({ type }) {
   return (
     <div className="stack">
       <div className="card center stack">
-        <div className="muted">
-          🏁 {result.type} completed · {result.chapter === "all" ? "All chapters" : `Chapter ${result.chapter}`}
+        <div className="muted result-line">
+          <IconFlag size={15} />
+          {result.type} completed · {result.chapter === "all" ? "All chapters" : `Chapter ${result.chapter}`}
         </div>
         <div className="score">
           {result.correct}
@@ -169,6 +179,7 @@ export default function QuizFlow({ type }) {
         <div className="pct">{result.pct}%</div>
         {!result.saved && <div className="note error">Your score couldn't be saved to the leaderboard.</div>}
         <button className="btn btn-primary" onClick={reset}>
+          <IconRefresh size={17} />
           Take another {label.toLowerCase()}
         </button>
       </div>
@@ -192,10 +203,16 @@ export default function QuizFlow({ type }) {
             })}
           </div>
           {!r.userAnswer && <div className="muted small">Not answered</div>}
-          {r.explanation && <div className="explain">💡 {r.explanation}</div>}
+          {r.explanation && (
+            <div className="explain">
+              <IconLightbulb size={16} />
+              <span>{r.explanation}</span>
+            </div>
+          )}
         </div>
       ))}
       <button className="btn btn-primary" onClick={reset}>
+        <IconRefresh size={17} />
         Take another {label.toLowerCase()}
       </button>
     </div>

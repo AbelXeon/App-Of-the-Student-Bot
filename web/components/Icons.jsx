@@ -167,3 +167,22 @@ export function IconSparkle(props) {
     </Svg>
   );
 }
+
+export function IconFlag(props) {
+  return (
+    <Svg {...props}>
+      <path d="M5.5 3v18" />
+      <path d="M5.5 4.4h11.9l-2.2 4 2.2 4H5.5" />
+    </Svg>
+  );
+}
+
+export function IconLightbulb(props) {
+  return (
+    <Svg {...props}>
+      <path d="M12 3.2a5.6 5.6 0 0 0-3.3 10.1c.6.5 1 1.2 1 2v.5h4.6v-.5c0-.8.4-1.5 1-2A5.6 5.6 0 0 0 12 3.2Z" />
+      <path d="M9.8 18.7h4.4" />
+      <path d="M10.6 21h2.8" />
+    </Svg>
+  );
+}

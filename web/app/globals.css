@@ -540,6 +540,9 @@ textarea.input {
 }
 .chip {
   appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   border: 1px solid var(--border);
   background: var(--surface-2);
   border-radius: 999px;
@@ -633,10 +636,17 @@ textarea.input {
   background: var(--bad-bg);
 }
 .explain {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   font-size: 14px;
   color: var(--muted);
   border-left: 3px solid var(--accent);
   padding-left: 10px;
+}
+.explain .icon {
+  margin-top: 2px;
+  color: var(--accent);
 }
 .score {
   font-size: 56px;
@@ -653,6 +663,12 @@ textarea.input {
   font-size: 20px;
   font-weight: 700;
   color: var(--accent);
+}
+.result-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
 /* ---------- flashcards ---------- */

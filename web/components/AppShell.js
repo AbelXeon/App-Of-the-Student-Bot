@@ -4,17 +4,18 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { api, getToken, clearToken } from "@/lib/api";
 import { Spinner } from "./ui";
+import { IconCards, IconChat, IconExam, IconHome, IconQuiz, IconTrophy } from "./Icons";
 
 const UserCtx = createContext(null);
 export const useUser = () => useContext(UserCtx);
 
 const TABS = [
-  { href: "/dashboard", icon: "🏠", label: "Home" },
-  { href: "/ask", icon: "💬", label: "Ask" },
-  { href: "/quiz", icon: "📝", label: "Quiz" },
-  { href: "/exam", icon: "🎓", label: "Exam" },
-  { href: "/flashcards", icon: "🎴", label: "Cards" },
-  { href: "/leaderboard", icon: "🏆", label: "Ranks" },
+  { href: "/dashboard", Icon: IconHome, label: "Home" },
+  { href: "/ask", Icon: IconChat, label: "Ask" },
+  { href: "/quiz", Icon: IconQuiz, label: "Quiz" },
+  { href: "/exam", Icon: IconExam, label: "Exam" },
+  { href: "/flashcards", Icon: IconCards, label: "Cards" },
+  { href: "/leaderboard", Icon: IconTrophy, label: "Ranks" },
 ];
 
 export default function AppShell({ title, children }) {
@@ -81,12 +82,12 @@ export default function AppShell({ title, children }) {
         </header>
         <main className="content">{children}</main>
         <nav className="tabs" aria-label="Main">
-          {TABS.map((t) => (
-            <Link key={t.href} href={t.href} className={`tab ${path === t.href ? "active" : ""}`}>
+          {TABS.map(({ href, Icon, label }) => (
+            <Link key={href} href={href} className={`tab ${path === href ? "active" : ""}`}>
               <span className="tab-icon" aria-hidden="true">
-                {t.icon}
+                <Icon size={21} />
               </span>
-              <span>{t.label}</span>
+              <span>{label}</span>
             </Link>
           ))}
         </nav>
