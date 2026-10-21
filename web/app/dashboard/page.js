@@ -4,13 +4,23 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import AppShell, { useUser } from "@/components/AppShell";
 import { ErrorNote } from "@/components/ui";
+import {
+  IconBook,
+  IconCards,
+  IconChat,
+  IconChevronRight,
+  IconExam,
+  IconQuiz,
+  IconSparkle,
+  IconTrophy,
+} from "@/components/Icons";
 
 const TILES = [
-  { href: "/ask", icon: "💬", title: "Ask Question", sub: "Answers from your material" },
-  { href: "/quiz", icon: "📝", title: "Take Quiz", sub: "5, 10 or 15 questions" },
-  { href: "/exam", icon: "🎓", title: "Take Exam", sub: "20, 25 or 30 questions" },
-  { href: "/flashcards", icon: "🎴", title: "Flashcards", sub: "Flip and revise" },
-  { href: "/leaderboard", icon: "🏆", title: "Leaderboard", sub: "See who's on top" },
+  { href: "/ask", Icon: IconChat, title: "Ask Question", sub: "Answers from your material", tone: "tone-teal" },
+  { href: "/quiz", Icon: IconQuiz, title: "Take Quiz", sub: "5, 10 or 15 questions", tone: "tone-violet" },
+  { href: "/exam", Icon: IconExam, title: "Take Exam", sub: "20, 25 or 30 questions", tone: "tone-amber" },
+  { href: "/flashcards", Icon: IconCards, title: "Flashcards", sub: "Flip and revise", tone: "tone-sky" },
+  { href: "/leaderboard", Icon: IconTrophy, title: "Leaderboard", sub: "See who's on top", tone: "tone-rose" },
 ];
 
 function Dashboard() {
@@ -41,13 +51,17 @@ function Dashboard() {
   return (
     <div className="stack">
       <div>
-        <h2 className="h1">Hi {user.first_name || user.username || "there"} 👋</h2>
+        <h2 className="h1">
+          Hi {user.first_name || user.username || "there"}
+          <IconSparkle size={18} className="greet-icon" />
+        </h2>
         <p className="muted">Pick up where you left off.</p>
       </div>
 
       <div className="card stack-sm">
         <label className="label" htmlFor="course">
-          📚 Active course
+          <IconBook size={15} />
+          Active course
         </label>
         <select id="course" className="input" value={user.course} onChange={changeCourse}>
           {user.courses.map((c) => (
@@ -75,13 +89,14 @@ function Dashboard() {
       </div>
 
       <div className="grid">
-        {TILES.map((t) => (
-          <Link key={t.href} href={t.href} className="tile">
+        {TILES.map(({ href, Icon, title, sub, tone }) => (
+          <Link key={href} href={href} className={`tile ${tone}`}>
             <span className="tile-icon" aria-hidden="true">
-              {t.icon}
+              <Icon size={21} />
             </span>
-            <span className="tile-title">{t.title}</span>
-            <span className="muted small">{t.sub}</span>
+            <span className="tile-title">{title}</span>
+            <span className="muted small">{sub}</span>
+            <IconChevronRight size={16} className="tile-arrow" />
           </Link>
         ))}
       </div>

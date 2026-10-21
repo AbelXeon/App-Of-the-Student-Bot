@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import AppShell, { useUser } from "@/components/AppShell";
 import { Spinner, ErrorNote } from "@/components/ui";
-
-const MEDAL = { 1: "🥇", 2: "🥈", 3: "🥉" };
+import { IconBook, IconGlobe, IconMedal, IconTrophy, IconUser } from "@/components/Icons";
 
 function Board() {
   const { user } = useUser();
@@ -29,10 +28,12 @@ function Board() {
     <div className="stack">
       <div className="seg" role="tablist">
         <button role="tab" aria-selected={scope === "course"} className={scope === "course" ? "on" : ""} onClick={() => setScope("course")}>
-          📚 This course
+          <IconBook size={16} />
+          This course
         </button>
         <button role="tab" aria-selected={scope === "all"} className={scope === "all" ? "on" : ""} onClick={() => setScope("all")}>
-          🌐 Global
+          <IconGlobe size={16} />
+          Global
         </button>
       </div>
 
@@ -49,10 +50,16 @@ function Board() {
             {scope === "course" ? data.course : "All courses"} · 1 point per correct answer
           </div>
           <div className="card list">
-            {data.rows.length === 0 && <p className="muted center">No scores yet. Finish a quiz or exam to take the #1 spot! 🥇</p>}
+            {data.rows.length === 0 && (
+              <p className="muted center">
+                No scores yet. Finish a quiz or exam to take the #1 spot! <IconTrophy size={16} />
+              </p>
+            )}
             {data.rows.map((r) => (
               <div key={r.rank} className={`lb-row ${r.isYou ? "you" : ""}`}>
-                <span className="lb-rank">{MEDAL[r.rank] || `#${r.rank}`}</span>
+                <span className={`lb-rank ${r.rank <= 3 ? `rank-${r.rank}` : ""}`}>
+                  {r.rank <= 3 ? <IconMedal size={19} /> : `#${r.rank}`}
+                </span>
                 <span className="lb-name">
                   {r.name}
                   {r.isYou && <span className="tag">you</span>}
@@ -62,7 +69,10 @@ function Board() {
             ))}
           </div>
           <div className="card">
-            <div className="label">👤 Your standing</div>
+            <div className="label">
+              <IconUser size={15} />
+              Your standing
+            </div>
             <div className="stats flat">
               <div className="stat">
                 <div className="stat-n">{data.me.points}</div>

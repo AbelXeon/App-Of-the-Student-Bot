@@ -1,3 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* ============================================================
+   Tokens
+   ============================================================ */
 :root {
   --bg: #0b1220;
   --surface: #121a2b;
@@ -12,6 +17,19 @@
   --bad: #f87171;
   --bad-bg: rgba(248, 113, 113, 0.14);
   --radius: 16px;
+
+  /* accent tones used by the dashboard tiles */
+  --tone-teal: #2dd4bf;
+  --tone-violet: #a78bfa;
+  --tone-amber: #fbbf24;
+  --tone-sky: #38bdf8;
+  --tone-rose: #fb7185;
+
+  --font-app: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 44px -28px rgba(0, 0, 0, 0.9);
+  --shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 28px 64px -30px rgba(0, 0, 0, 0.95);
 }
 
 @media (prefers-color-scheme: light) {
@@ -28,6 +46,16 @@
     --good-bg: rgba(5, 150, 105, 0.12);
     --bad: #dc2626;
     --bad-bg: rgba(220, 38, 38, 0.1);
+
+    --tone-teal: #0d9488;
+    --tone-violet: #7c3aed;
+    --tone-amber: #d97706;
+    --tone-sky: #0284c7;
+    --tone-rose: #e11d48;
+
+    --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 45%);
+    --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 16px 36px -26px rgba(15, 23, 42, 0.35);
+    --shadow-lift: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 24px 52px -26px rgba(15, 23, 42, 0.4);
   }
 }
 
@@ -40,9 +68,13 @@ body {
   padding: 0;
 }
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(120% 70% at 50% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
+    radial-gradient(90% 55% at 104% 4%, color-mix(in srgb, var(--tone-violet) 11%, transparent), transparent 58%),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--text);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 16px/1.5 var(--font-app);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }
@@ -62,6 +94,16 @@ h2,
 p {
   margin: 0;
 }
+::selection {
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+/* icons (drop-in replacement for the old emoji elements) */
+.icon {
+  display: inline-block;
+  vertical-align: -0.18em;
+  flex: none;
+}
 
 /* ---------- layout ---------- */
 .shell {
@@ -78,13 +120,16 @@ p {
   justify-content: space-between;
   gap: 12px;
   padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
 }
 .topbar-title {
   font-size: 18px;
   font-weight: 700;
   line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 .topbar-sub {
   font-size: 12px;
@@ -107,7 +152,9 @@ p {
   justify-content: center;
   gap: 2px;
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--border);
 }
 .tab {
@@ -116,19 +163,26 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
   padding: 6px 2px;
   border-radius: 12px;
   font-size: 11px;
   color: var(--muted);
+  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
 }
 .tab-icon {
   font-size: 20px;
   line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tab:active {
+  transform: scale(0.95);
 }
 .tab.active {
   color: var(--accent);
-  background: var(--surface-2);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface-2));
   font-weight: 600;
 }
 .center-screen {
@@ -169,41 +223,52 @@ p {
 .h1 {
   font-size: 24px;
   font-weight: 700;
+  letter-spacing: -0.025em;
 }
 .h2 {
   font-size: 16px;
   font-weight: 650;
+  letter-spacing: -0.01em;
 }
 .label {
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .card {
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
+  box-shadow: var(--shadow-card);
 }
 .tag {
   margin-left: 8px;
   padding: 1px 8px;
   border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--muted);
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+  color: var(--accent);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .btn {
   appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: 1px solid var(--border);
-  background: var(--surface-2);
+  background: var(--sheen), var(--surface-2);
   border-radius: 12px;
   padding: 11px 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.05s ease, opacity 0.15s ease;
+  transition: transform 0.08s ease, opacity 0.15s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .btn:active:not(:disabled) {
   transform: scale(0.98);
@@ -213,12 +278,18 @@ p {
   cursor: not-allowed;
 }
 .btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 62%, #60a5fa));
+  border-color: transparent;
   color: var(--accent-ink);
+  box-shadow: 0 12px 28px -16px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+.btn-primary:disabled {
+  box-shadow: none;
 }
 .btn-ghost {
   background: transparent;
+  border-color: transparent;
+  color: var(--muted);
 }
 .btn-sm {
   padding: 6px 12px;
@@ -228,6 +299,15 @@ p {
   padding: 14px 18px;
   font-size: 17px;
 }
+.btn:focus-visible,
+.chip:focus-visible,
+.opt:focus-visible,
+.tile:focus-visible,
+.flash:focus-visible,
+.tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
 
 .input {
   width: 100%;
@@ -236,6 +316,7 @@ p {
   border-radius: 12px;
   padding: 12px 14px;
   outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .input:focus {
   border-color: var(--accent);
@@ -316,14 +397,17 @@ textarea.input {
   display: grid;
   place-items: center;
   font-size: 32px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  color: var(--accent);
+  background: var(--sheen), var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
   border-radius: 20px;
+  box-shadow: 0 20px 40px -24px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 .login-title {
   text-align: center;
   font-size: 28px;
   font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 /* ---------- dashboard ---------- */
@@ -336,19 +420,22 @@ textarea.input {
   margin-top: 8px;
 }
 .stat {
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px;
   text-align: center;
+  box-shadow: var(--shadow-card);
 }
 .stats.flat .stat {
   background: var(--surface-2);
+  box-shadow: none;
 }
 .stat-n {
   font-size: 24px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 .stat-l {
   font-size: 12px;
@@ -360,22 +447,89 @@ textarea.input {
   gap: 12px;
 }
 .tile {
+  --tone: var(--accent);
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 16px;
-  background: var(--surface);
+  overflow: hidden;
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tone) 16%, transparent), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+}
+.tile:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--tone) 40%, var(--border));
+  box-shadow: var(--shadow-lift);
+}
+.tile:hover::after {
+  opacity: 1;
 }
 .tile:active {
+  transform: scale(0.99);
   background: var(--surface-2);
 }
 .tile-icon {
-  font-size: 26px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+  border-radius: 13px;
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tone) 28%, transparent);
 }
 .tile-title {
   font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.tile-arrow {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  color: var(--muted);
+  opacity: 0.45;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.tile:hover .tile-arrow {
+  opacity: 1;
+  color: var(--tone);
+  transform: translateX(2px);
+}
+
+/* per-tile accent tones */
+.tone-teal {
+  --tone: var(--tone-teal);
+}
+.tone-violet {
+  --tone: var(--tone-violet);
+}
+.tone-amber {
+  --tone: var(--tone-amber);
+}
+.tone-sky {
+  --tone: var(--tone-sky);
+}
+.tone-rose {
+  --tone: var(--tone-rose);
+}
+
+.greet-icon {
+  color: var(--accent);
+  margin-left: 6px;
 }
 
 /* ---------- chips / segmented ---------- */
@@ -393,10 +547,11 @@ textarea.input {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 .chip.on {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 62%, #60a5fa));
+  border-color: transparent;
   color: var(--accent-ink);
 }
 .seg {
@@ -404,12 +559,16 @@ textarea.input {
   grid-template-columns: 1fr 1fr;
   gap: 4px;
   padding: 4px;
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
 }
 .seg button {
   appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   border: 0;
   background: transparent;
   padding: 9px;
@@ -417,9 +576,10 @@ textarea.input {
   font-weight: 600;
   color: var(--muted);
   cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 .seg button.on {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 62%, #60a5fa));
   color: var(--accent-ink);
 }
 
@@ -432,13 +592,15 @@ textarea.input {
 }
 .progress-bar {
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #60a5fa));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
   transition: width 0.25s ease;
 }
 .question {
   font-size: 18px;
   font-weight: 650;
   line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 .opt {
   display: block;
@@ -450,6 +612,10 @@ textarea.input {
   border-radius: 12px;
   padding: 12px 14px;
   cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.08s ease;
+}
+.opt:active {
+  transform: scale(0.995);
 }
 .opt.selected {
   border-color: var(--accent);
@@ -477,6 +643,11 @@ textarea.input {
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--text), color-mix(in srgb, var(--text) 55%, var(--accent)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .pct {
   font-size: 20px;
@@ -496,14 +667,29 @@ textarea.input {
   gap: 14px;
   padding: 24px;
   text-align: center;
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-radius: 22px;
+  box-shadow: var(--shadow-card);
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.25s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+}
+.flash:hover {
+  transform: translateY(-2px);
+}
+.flash:active {
+  transform: scale(0.995);
 }
 .flash.flipped {
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
-  border-color: var(--accent);
+  background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      color-mix(in srgb, var(--accent) 4%, transparent)
+    ),
+    var(--surface);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent),
+    0 26px 60px -34px color-mix(in srgb, var(--accent) 85%, transparent);
 }
 .flash-tag {
   font-size: 12px;
@@ -516,6 +702,7 @@ textarea.input {
   font-size: 20px;
   font-weight: 600;
   line-height: 1.45;
+  letter-spacing: -0.01em;
 }
 .flash-hint {
   font-size: 12px;
@@ -541,8 +728,25 @@ textarea.input {
 }
 .lb-rank {
   width: 34px;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.lb-rank.rank-1 {
+  color: #f5c451;
+}
+.lb-rank.rank-2 {
+  color: #c3ccdb;
+}
+.lb-rank.rank-3 {
+  color: #cf8a5c;
+}
+.lb-row.you .lb-rank {
+  color: var(--accent);
 }
 .lb-name {
   flex: 1;
@@ -578,15 +782,16 @@ textarea.input {
 }
 .bubble.user {
   align-self: flex-end;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 62%, #60a5fa));
   color: var(--accent-ink);
   border-bottom-right-radius: 6px;
 }
 .bubble.bot {
   align-self: flex-start;
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
   border: 1px solid var(--border);
   border-bottom-left-radius: 6px;
+  box-shadow: var(--shadow-card);
 }
 .bubble.failed {
   color: var(--bad);

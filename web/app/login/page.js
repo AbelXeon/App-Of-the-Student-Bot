@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, getToken, setToken } from "@/lib/api";
 import { ErrorNote } from "@/components/ui";
+import { IconBook } from "@/components/Icons";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,7 +79,7 @@ export default function LoginPage() {
     <div className="center-screen">
       <div className="login">
         <div className="logo" aria-hidden="true">
-          📚
+          <IconBook size={30} />
         </div>
         <h1 className="login-title">Study Bot</h1>
         <p className="muted center">Log in with your Telegram account. The code arrives in the bot.</p>
@@ -137,7 +138,7 @@ export default function LoginPage() {
                   setError("");
                 }}
               >
-                ← Change
+                Change
               </button>
               <button className="btn grow" disabled={busy || wait > 0} onClick={sendCode}>
                 {wait > 0 ? `Resend in ${wait}s` : "Resend code"}

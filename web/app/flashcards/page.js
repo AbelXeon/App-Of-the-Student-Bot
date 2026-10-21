@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import AppShell, { useUser } from "@/components/AppShell";
 import ChapterPicker from "@/components/ChapterPicker";
 import { Spinner, ErrorNote } from "@/components/ui";
+import { IconArrowLeft, IconArrowRight, IconHome, IconRefresh } from "@/components/Icons";
 
 function Flashcards() {
   const { user } = useUser();
@@ -103,15 +104,18 @@ function Flashcards() {
 
       <div className="row">
         <button className="btn" disabled={i === 0 || loading} onClick={() => go(i - 1)}>
-          ← Prev
+          <IconArrowLeft size={17} />
+          Prev
         </button>
         {isLast ? (
           <button className="btn btn-primary grow" disabled={loading} onClick={() => load(true)}>
-            {loading ? "Loading…" : "🔁 More cards"}
+            <IconRefresh size={17} />
+            {loading ? "Loading…" : "More cards"}
           </button>
         ) : (
           <button className="btn btn-primary grow" onClick={() => go(i + 1)}>
-            Next →
+            Next
+            <IconArrowRight size={17} />
           </button>
         )}
       </div>
@@ -123,7 +127,8 @@ function Flashcards() {
           setFlipped(false);
         }}
       >
-        🏠 End session
+        <IconHome size={17} />
+        End session
       </button>
     </div>
   );
