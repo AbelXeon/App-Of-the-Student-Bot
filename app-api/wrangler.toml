@@ -1,0 +1,23 @@
+name = "study-app-api"
+main = "src/index.js"
+compatibility_date = "2025-10-01"
+
+# Same D1 database the bot uses. Copy database_name and database_id
+# from the bot's D1 binding (Cloudflare dashboard -> D1 -> study-db).
+[[d1_databases]]
+binding = "DB"
+database_name = "study-db"
+database_id = "d0f666b7-bfd1-496a-b75d-1220b759c8d0"
+
+[vars]
+# Comma-separated list of sites allowed to call this API.
+ALLOWED_ORIGINS = "http://localhost:3000"
+
+# Secrets (set once, not stored in this file):
+#   wrangler secret put TELEGRAM_BOT_TOKEN
+#   wrangler secret put NEON_URL
+#   wrangler secret put GEMINI_API_KEY
+#   wrangler secret put GEMINI_API_KEY_2
+#   wrangler secret put OPENROUTER_API_KEY
+#   wrangler secret put HF_TOKEN
+#   wrangler secret put JWT_SECRET      (new: any long random string)
